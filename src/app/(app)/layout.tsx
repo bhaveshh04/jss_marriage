@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MonitorPlay, Plus, LayoutGrid } from "lucide-react";
+import { MonitorPlay, Plus, LayoutGrid, FileSpreadsheet } from "lucide-react";
 import Logo from "@/components/Logo";
 import LogoutButton from "@/components/LogoutButton";
 
@@ -12,6 +12,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <nav className="flex items-center gap-1">
             <Link href="/" className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-kumkum-100 hover:bg-white/10"><LayoutGrid size={16} /><span className="hidden md:inline">Dashboard</span></Link>
             <Link href="/display" className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-kumkum-100 hover:bg-white/10"><MonitorPlay size={16} /><span className="hidden md:inline">Live display</span></Link>
+            <Link href="/candidates/import" className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-kumkum-100 hover:bg-white/10"><FileSpreadsheet size={16} /><span className="hidden md:inline">Import Excel</span></Link>
             <Link href="/candidates/new" className="btn-gold ml-1 !py-2"><Plus size={16} /> Add bio-data</Link>
             <LogoutButton />
           </nav>

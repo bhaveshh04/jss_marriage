@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "exceljs": "^4.4.0",
     "html-to-image": "^1.11.11",
     "jose": "^5.9.6",
     "jspdf": "^2.5.2",
