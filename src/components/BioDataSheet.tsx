@@ -6,12 +6,18 @@ import { ageYears, dateMr, heightMr, timeMr, titleMr, toMr } from "@/lib/marathi
 export const SHEET_W = 794; // A4 @ 96dpi
 export const SHEET_H = 1123;
 
-const EVENT = process.env.NEXT_PUBLIC_EVENT_TITLE_MR || "मराठा वधू-वर मेळावा";
-const ORG = process.env.NEXT_PUBLIC_ORG_NAME_MR || "मराठा वधू-वर सूचक केंद्र";
-const CONTACT = process.env.NEXT_PUBLIC_ORG_CONTACT || "";
+// Khandesh Maratha Mandal — event branding
+const EVENT  = process.env.NEXT_PUBLIC_EVENT_TITLE_MR  || "मराठा वधू-वर मेळावा";
+const ORG    = process.env.NEXT_PUBLIC_ORG_NAME_MR     || "खान्देश मराठा मंडळ";
+const SUBORG = process.env.NEXT_PUBLIC_ORG_SUBNAME_MR  || "पिंपरी चिंचवड व पुणे जिल्हा परिसर";
+const STHAPANA = process.env.NEXT_PUBLIC_STHAPANA      || "स्थापना : १ मे १९८६";
+const REG_NO   = process.env.NEXT_PUBLIC_REG_NO        || "र. नं. महाराष्ट्र २८८९/८६ एफ ३९७८-पुणे";
+const CONTACT  = process.env.NEXT_PUBLIC_ORG_CONTACT   || "";
+const JAI1     = process.env.NEXT_PUBLIC_JAI1          || "जय जिजाऊ";
+const JAI2     = process.env.NEXT_PUBLIC_JAI2          || "जय शिवराय";
 
-const K = "#8C1D2F"; // kumkum
-const H = "#D9A21B"; // haldi
+const K = "#8C1D2F"; // kumkum red
+const H = "#D9A21B"; // haldi gold
 
 function Row({ l, v, strong }: { l: string; v?: string | null; strong?: boolean }) {
   if (!v) return null;
@@ -79,7 +85,7 @@ const BioDataSheet = forwardRef<HTMLDivElement, Props>(function BioDataSheet({ c
       className="bio-sheet relative overflow-hidden bg-[#FFFCF4] font-marathi text-[14px] text-[#241B18]"
       style={{ width: SHEET_W, height: SHEET_H }}
     >
-      {/* frame */}
+      {/* decorative border frame */}
       <div className="pointer-events-none absolute inset-[14px] border-[3px]" style={{ borderColor: K }} />
       <div className="pointer-events-none absolute inset-[22px] border" style={{ borderColor: H }} />
       <Corner className="left-[10px] top-[10px]" />
@@ -87,22 +93,42 @@ const BioDataSheet = forwardRef<HTMLDivElement, Props>(function BioDataSheet({ c
       <Corner className="bottom-[10px] left-[10px] -scale-y-100" />
       <Corner className="bottom-[10px] right-[10px] -scale-100" />
 
-      <div className="relative flex h-full flex-col px-[52px] pb-[40px] pt-[38px]">
-        {/* header */}
+      <div className="relative flex h-full flex-col px-[52px] pb-[40px] pt-[32px]">
+        {/* ── Header: Khandesh Maratha Mandal branding ── */}
         <header className="text-center">
-          <p className="text-[13px] tracking-wide" style={{ color: H }}>॥ श्री गणेशाय नमः ॥</p>
-          <h1 className="mt-0.5 font-marathiHead text-[26px] font-bold leading-tight" style={{ color: K }}>{EVENT}</h1>
-          <p className="text-[13px] text-[#6b4a43]">{ORG}</p>
-          <div className="mx-auto mt-2 flex w-fit items-center gap-3 rounded-sm px-8 py-[3px] font-marathiHead text-[19px] font-bold text-white" style={{ background: K }}>
+          {/* Top info bar */}
+          <div className="mb-1.5 flex items-center justify-between text-[11px] text-[#6b4a43]">
+            <span>{STHAPANA}</span>
+            <span>{REG_NO}</span>
+          </div>
+          {/* Jai slogans */}
+          <div className="flex items-center justify-between font-marathiHead text-[15px] font-bold" style={{ color: K }}>
+            <span>{JAI1}</span>
+            <span className="text-[10px] tracking-wide text-[#b79a6a]">॥ श्री गणेशाय नमः ॥</span>
+            <span>{JAI2}</span>
+          </div>
+          {/* Org name banner */}
+          <div
+            className="my-1.5 py-[5px] px-6 font-marathiHead text-[28px] font-bold text-white leading-tight"
+            style={{ background: K, borderLeft: `5px solid ${H}`, borderRight: `5px solid ${H}` }}
+          >
+            {ORG}
+          </div>
+          <p className="text-[13px] font-semibold text-[#6b4a43]">{SUBORG}</p>
+          {/* Event title */}
+          <p className="mt-0.5 font-marathiHead text-[17px] font-bold" style={{ color: H }}>{EVENT}</p>
+          {/* Gender badge */}
+          <div className="mx-auto mt-2 flex w-fit items-center gap-3 rounded-sm px-8 py-[3px] font-marathiHead text-[18px] font-bold text-white" style={{ background: K }}>
             <span style={{ color: H }}>❖</span>{titleMr(c.gender)}<span style={{ color: H }}>❖</span>
           </div>
-          <div className="mt-2 flex justify-between text-[12.5px] text-[#6b4a43]">
+          {/* Registration info */}
+          <div className="mt-1.5 flex justify-between text-[12.5px] text-[#6b4a43]">
             <span>नोंदणी क्र. : <b className="text-[#241B18]">{toMr(c.registration_no)}</b></span>
             <span>नोंदणी दिनांक : <b className="text-[#241B18]">{dateMr(c.registration_date)}</b></span>
           </div>
         </header>
 
-        {/* personal + photo */}
+        {/* ── Personal + photo ── */}
         <div className="mt-2 flex gap-5">
           <div className="min-w-0 flex-1">
             <Section title="वैयक्तिक माहिती">
@@ -172,7 +198,7 @@ const BioDataSheet = forwardRef<HTMLDivElement, Props>(function BioDataSheet({ c
         )}
 
         <footer className="mt-auto flex items-end justify-between border-t pt-2 text-[12px] text-[#6b4a43]" style={{ borderColor: H }}>
-          <span>{ORG}</span>
+          <span>{ORG} — {SUBORG}</span>
           <span>{CONTACT}</span>
         </footer>
       </div>

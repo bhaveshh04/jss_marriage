@@ -7,8 +7,10 @@ import ScaleToFit from "./ScaleToFit";
 import DeleteButton from "./DeleteButton";
 import { downloadPdf, downloadPng } from "@/lib/export";
 import type { Candidate } from "@/lib/schema";
+import { useLang, t } from "@/lib/lang";
 
 export default function BioDataViewer({ c, autoPrint }: { c: Candidate; autoPrint?: boolean }) {
+  const { lang } = useLang();
   const sheet = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState<"pdf" | "png" | null>(null);
   const fileName = `${c.registration_no}_${c.candidate_name}`;
@@ -29,30 +31,37 @@ export default function BioDataViewer({ c, autoPrint }: { c: Candidate; autoPrin
       await (kind === "pdf" ? downloadPdf : downloadPng)(sheet.current, fileName);
     } catch (e) {
       console.error(e);
-      alert("Could not create the file. Please try again, or use Print → Save as PDF.");
+      alert(t(lang, "फाईल तयार होऊ शकली नाही. पुन्हा प्रयत्न करा.", "Could not create the file. Please try again, or use Print → Save as PDF."));
     }
     setBusy(null);
   }
 
-  useEffect(() => { if (autoPrint) { const t = setTimeout(print, 600); return () => clearTimeout(t); } /* eslint-disable-next-line */ }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { if (autoPrint) { const t = setTimeout(print, 600); return () => clearTimeout(t); } }, []);
+
+  const genderLabel = c.gender === "bride"
+    ? t(lang, "वधू", "Bride")
+    : t(lang, "वर", "Groom");
 
   return (
     <div>
       <div className="no-print mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-marathi text-2xl font-bold text-kumkum-900">{c.candidate_name}</h1>
-          <p className="text-sm text-stone-500">Reg. no. {c.registration_no} · {c.gender === "bride" ? "Bride" : "Groom"}</p>
+          <p className="text-sm text-stone-500">
+            {t(lang, "नोंदणी क्र.", "Reg. no.")} {c.registration_no} · {genderLabel}
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <button onClick={print} className="btn-primary"><Printer size={17} /> Print</button>
-          <Link href={`/display?id=${c.id}`} className="btn-gold"><MonitorPlay size={17} /> Display</Link>
+          <button onClick={print} className="btn-primary"><Printer size={17} /> {t(lang, "प्रिंट", "Print")}</button>
+          <Link href={`/display?id=${c.id}`} className="btn-gold"><MonitorPlay size={17} /> {t(lang, "डिस्प्ले", "Display")}</Link>
           <button onClick={() => download("pdf")} disabled={!!busy} className="btn-outline">
-            {busy === "pdf" ? <Loader2 size={17} className="animate-spin" /> : <Download size={17} />} Download PDF
+            {busy === "pdf" ? <Loader2 size={17} className="animate-spin" /> : <Download size={17} />} PDF
           </button>
           <button onClick={() => download("png")} disabled={!!busy} className="btn-outline">
-            {busy === "png" ? <Loader2 size={17} className="animate-spin" /> : <FileImage size={17} />} Image
+            {busy === "png" ? <Loader2 size={17} className="animate-spin" /> : <FileImage size={17} />} {t(lang, "इमेज", "Image")}
           </button>
-          <Link href={`/candidates/${c.id}/edit`} className="btn-outline"><Pencil size={16} /> Edit</Link>
+          <Link href={`/candidates/${c.id}/edit`} className="btn-outline"><Pencil size={16} /> {t(lang, "संपादन", "Edit")}</Link>
           <DeleteButton id={c.id} name={c.candidate_name} redirect="/" variant="button" />
         </div>
       </div>
